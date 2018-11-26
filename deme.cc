@@ -42,34 +42,6 @@ Deme::~Deme()
 // Then, the pair is recombined once (using the recombine() method) to generate
 // a new pair of chromosomes, which are stored in the Deme.
 // After we've generated pop_size new chromosomes, we delete all the old ones.
-/*void Deme::compute_next_generation()
-{
-  // find 2 parents
-  Chromosome* parent1 = select_parent();
-  Chromosome* parent2 = select_parent();
-
-  // take random number and check for mutation
-  int mut_num = rand() % (100*1000); // 100,000
-  									 // can make that line a lambda function...
-  double mut1 = mut_num / 100000.0;
-
-  int mut_num = rand() % (100*1000);
-  double mut2 = mut_num / 100000.0;  
-  
-  if(mut1<mut_rate) {
-  	parent1->mutate();
-  }
-  if(mut2<mut_rate) {
-  	parent2->mutate();
-  }
-
-  std::pair<Chromosome*, Chromosome*> children;
-  children = parent1 -> recombine(parent2);
-
-  //put children into vector and delete old parents
-
-}*/
-
 void Deme::compute_next_generation()
 {
   // make 2 parents
@@ -78,7 +50,7 @@ void Deme::compute_next_generation()
     Chromosome* parent2 = select_parent();
     int mut_num = rand() % (100*1000); 
     double rand_val1 = mut_num / 100000.0;
-    int mut_num = rand() % (100*1000);
+    mut_num = rand() % (100*1000);
     double rand_val2 = mut_num / 100000.0;  
 
     if (rand_val1 < mut_rate_){
