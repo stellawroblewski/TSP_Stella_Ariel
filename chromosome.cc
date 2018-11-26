@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cassert>
 #include <random>
+#include <iostream>
 
 #include "chromosome.hh"
 
@@ -21,7 +22,7 @@ Chromosome::Chromosome(const Cities* cities_ptr)
 // Clean up as necessary
 Chromosome::~Chromosome()
 {
-  assert(is_valid());
+  delete this; //what is there to delete?
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -29,9 +30,14 @@ Chromosome::~Chromosome()
 void
 Chromosome::mutate()
 {
-  // Add your implementation here
+  int rando1 = rand() % order_.size();
+  int rando2 = rand() % order_.size();
+  unsigned int pop1 = order_[rando1];
+  unsigned int pop2 = order_[rando2];
 
-  assert(is_valid());
+  order_[rando2] = pop1;
+  order_[rando1] = pop2;
+
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -42,8 +48,18 @@ Chromosome::recombine(const Chromosome* other)
 {
   assert(is_valid());
   assert(other->is_valid());
+  unsigned int rando1 = rand() % order_.size();
+  unsigned int rando2 = rand() % order_.size();
 
-  // Add your implementation here
+  Chromosome* firstBorn = create_crossover_child(this, other, rando1,rando2);
+  Chromosome* secondBorn = create_crossover_child(other, this, rando1,rando2);
+
+  std::pair<Chromosome*, Chromosome*> kiddos;
+  kiddos.first = firstBorn;
+  kiddos.second = secondBorn;
+
+  return kiddos;
+
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -83,7 +99,7 @@ Chromosome::create_crossover_child(const Chromosome* p1, const Chromosome* p2,
 double
 Chromosome::get_fitness() const
 {
-  // Add your implementation here
+  return 1 / cities_ptr_->Cities::total_path_distance(order_);
 }
 
 // A chromsome is valid if it has no repeated values in its permutation,
@@ -92,7 +108,16 @@ Chromosome::get_fitness() const
 bool
 Chromosome::is_valid() const
 {
-  // Add your implementation here
+  std::vector<unsigned int> v(order_.size());
+  for(unsigned int curVal = 0; curVal < order_.size(); curVal++) {
+    // we think this checks for gaps, but unsure what gap is
+    unsigned int thing1 = order_[curVal];
+    v[thing1]++;
+    if (v[thing1]>1) {
+      return false;
+    }
+  }
+  return true;
 }
 
 // Find whether a certain value appears in a given range of the chromosome.
@@ -101,5 +126,13 @@ Chromosome::is_valid() const
 bool
 Chromosome::is_in_range(unsigned value, unsigned begin, unsigned end) const
 {
-  // Add your implementation here
+  
+  for(int i = begin; i < end; i++) {
+    if(order_[i] == value) {
+      return true;
+    }
+  }
+  return false;
+
+
 }
