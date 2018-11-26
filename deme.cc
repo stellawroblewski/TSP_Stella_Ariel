@@ -76,8 +76,8 @@ void Deme::compute_next_generation()
   for (int i = 0; i < pop_.size(); i++){ 
     Chromosome* parent1 = select_parent();
     Chromosome* parent2 = select_parent();
-    int rand_val1 = rand() % (100*1000); 
-    double mut1 = mut_num / 100000.0;
+    int mut_num = rand() % (100*1000); 
+    double rand_val1 = mut_num / 100000.0;
     int mut_num = rand() % (100*1000);
     double rand_val2 = mut_num / 100000.0;  
 
